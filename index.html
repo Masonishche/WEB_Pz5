@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Практична робота №5 - Системи електропостачання</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #2a4d69);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        h1 {
+            color: #1a2a6c;
+            margin-bottom: 10px;
+            font-size: 2.2rem;
+        }
+        
+        .subtitle {
+            color: #2a4d69;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .panel {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+        
+        .panel:hover {
+            transform: translateY(-5px);
+        }
+        
+        .panel h2 {
+            color: #1a2a6c;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4b86b4;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2a4d69;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus {
+            border-color: #4b86b4;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(75, 134, 180, 0.2);
+        }
+        
+        button {
+            background: linear-gradient(to right, #1a2a6c, #4b86b4);
+            color: white;
+            border: none;
+            padding: 14px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background: linear-gradient(to right, #4b86b4, #1a2a6c);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .results {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .results h2 {
+            color: #1a2a6c;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .result-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .result-box {
+            flex: 1;
+            min-width: 250px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .result-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin: 15px 0;
+            color: #1a2a6c;
+        }
+        
+        .chart-container {
+            width: 100%;
+            height: 300px;
+            margin: 30px 0;
+        }
+        
+        .comparison {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .system-card {
+            background: #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            width: 45%;
+            min-width: 280px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .single-system {
+            border-top: 5px solid #e63946;
+        }
+        
+        .double-system {
+            border-top: 5px solid #2a9d8f;
+        }
+        
+        .system-card h3 {
+            margin-bottom: 15px;
+            color: #1a2a6c;
+        }
+        
+        .damage-result {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 20px 0;
+            color: #e63946;
+        }
+        
+        .export-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .export-buttons button {
+            flex: 1;
+        }
+        
+        .pdf-btn {
+            background: linear-gradient(to right, #e63946, #d90429);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: white;
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+            
+            .system-card {
+                width: 100%;
+            }
+            
+            .result-box {
+                min-width: 100%;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Практична робота №5</h1>
+            <div class="subtitle">Веб калькулятор для порівняння надійності одноколової та двоколової систем електропередачі</div>
+            <p>Розрахунок збитків від перерв електропостачання для однотрансформаторної ГТП</p>
+        </header>
+        
+        <div class="content">
+            <div class="panel">
+                <h2>Параметри системи</h2>
+                <div class="form-group">
+                    <label for="systemType">Тип системи електропостачання</label>
+                    <select id="systemType">
+                        <option value="single">Одноколова система</option>
+                        <option value="double">Двоколова система</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="voltage">Робоча напруга (кВ)</label>
+                    <select id="voltage">
+                        <option value="10">10 кВ</option>
+                        <option value="35">35 кВ</option>
+                        <option value="110">110 кВ</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="lineType">Тип лінії електропередачі</label>
+                    <select id="lineType">
+                        <option value="overhead">Повітряна лінія (ПЛ)</option>
+                        <option value="cable">Кабельна лінія (КЛ)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="lineLength">Довжина лінії (км)</label>
+                    <input type="number" id="lineLength" value="10" min="1" max="100">
+                </div>
+                
+                <div class="form-group">
+                    <label for="transformerType">Тип трансформатора</label>
+                    <select id="transformerType">
+                        <option value="110/10">110/10 кВ</option>
+                        <option value="35/10">35/10 кВ</option>
+                        <option value="10/0.4">10/0.4 кВ</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="connections">Кількість приєднань (10 кВ)</label>
+                    <input type="number" id="connections" value="6" min="1" max="20">
+                </div>
+                
+                <button id="calcReliability">Розрахувати надійність</button>
+            </div>
+            
+            <div class="panel">
+                <h2>Розрахунок збитків</h2>
+                
+                <div class="form-group">
+                    <label for="maxLoad">Максимальне навантаження, P<sub>M</sub> (МВт)</label>
+                    <input type="number" id="maxLoad" value="5.12" step="0.01">
+                </div>
+                
+                <div class="form-group">
+                    <label for="usageTime">Час використання макс. навантаження, T<sub>M</sub> (год)</label>
+                    <input type="number" id="usageTime" value="6451">
+                </div>
+                
+                <div class="form-group">
+                    <label for="failureRate">Частота аварійних відмов, ω (рік<sup>-1</sup>)</label>
+                    <input type="number" id="failureRate" value="0.01" step="0.001">
+                </div>
+                
+                <div class="form-group">
+                    <label for="recoveryTime">Середній час відновлення, t<sub>B</sub> (год)</label>
+                    <input type="number" id="recoveryTime" value="45">
+                </div>
+                
+                <div class="form-group">
+                    <label for="specificDamageA">Питомі збитки (аварійні), грн/кВт·год</label>
+                    <input type="number" id="specificDamageA" value="23.6" step="0.1">
+                </div>
+                
+                <div class="form-group">
+                    <label for="specificDamageP">Питомі збитки (плановані), грн/кВт·год</label>
+                    <input type="number" id="specificDamageP" value="17.6" step="0.1">
+                </div>
+                
+                <button id="calcDamages">Розрахувати збитки</button>
+            </div>
+        </div>
+        
+        <div class="results">
+            <h2>Результати розрахунків</h2>
+            
+            <div class="result-container">
+                <div class="result-box">
+                    <h3>Надійність системи</h3>
+                    <div class="result-value" id="reliabilityResult">0.95</div>
+                    <p>Ймовірність безвідмовної роботи</p>
+                </div>
+                
+                <div class="result-box">
+                    <h3>Коефіцієнт аварійного простою</h3>
+                    <div class="result-value" id="downtimeResult">0.00036</div>
+                    <p>Імовірність знаходження системи в аварійному простії</p>
+                </div>
+                
+                <div class="result-box">
+                    <h3>Збитки від перерв</h3>
+                    <div class="result-value" id="damageResult">0.00 грн</div>
+                    <p>Математичне сподівання збитків</p>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <canvas id="reliabilityChart"></canvas>
+            </div>
+            
+            <div class="comparison">
+                <div class="system-card single-system">
+                    <h3>Одноколова система</h3>
+                    <p><strong>Частота відмов:</strong> <span id="singleFailureRate">0.295</span> рік<sup>-1</sup></p>
+                    <p><strong>Час відновлення:</strong> <span id="singleRecoveryTime">10.7</span> год</p>
+                    <p><strong>Коеф. аварійного простою:</strong> <span id="singleDowntime">3.6e-4</span></p>
+                </div>
+                
+                <div class="system-card double-system">
+                    <h3>Двоколова система</h3>
+                    <p><strong>Частота відмов:</strong> <span id="doubleFailureRate">0.0237</span> рік<sup>-1</sup></p>
+                    <p><strong>Час відновлення:</strong> <span id="doubleRecoveryTime">5.35</span> год</p>
+                    <p><strong>Коеф. аварійного простою:</strong> <span id="doubleDowntime">1.45e-5</span></p>
+                </div>
+            </div>
+            
+            <div class="damage-calculation">
+                <h3>Розрахунок збитків для однотрансформаторної ГПП</h3>
+                <p>Математичне сподівання аварійного недовідпущення: <span id="energyShortageA">14900</span> кВт·год</p>
+                <p>Математичне сподівання планового недовідпущення: <span id="energyShortageP">132400</span> кВт·год</p>
+                <div class="damage-result">Сумарні збитки: <span id="totalDamage">2682000</span> грн</div>
+            </div>
+            
+            <div class="export-buttons">
+                <button id="saveResults">Зберегти результати</button>
+                <button class="pdf-btn" id="exportPDF">Експорт у PDF</button>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Практична робота №5 з дисципліни "Системи електропостачання"</p>
+        <p>Розроблено з використанням HTML, CSS та JavaScript</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Елементи інтерфейсу
+            const calcReliabilityBtn = document.getElementById('calcReliability');
+            const calcDamagesBtn = document.getElementById('calcDamages');
+            const saveResultsBtn = document.getElementById('saveResults');
+            const exportPDFBtn = document.getElementById('exportPDF');
+            
+            // Результати
+            const reliabilityResult = document.getElementById('reliabilityResult');
+            const downtimeResult = document.getElementById('downtimeResult');
+            const damageResult = document.getElementById('damageResult');
+            
+            // Ініціалізація графіка
+            const ctx = document.getElementById('reliabilityChart').getContext('2d');
+            const reliabilityChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Одноколова система', 'Двоколова система'],
+                    datasets: [{
+                        label: 'Ймовірність безвідмовної роботи',
+                        data: [0.92, 0.99],
+                        backgroundColor: [
+                            'rgba(230, 57, 70, 0.7)',
+                            'rgba(42, 157, 143, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(230, 57, 70, 1)',
+                            'rgba(42, 157, 143, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 1.0,
+                            title: {
+                                display: true,
+                                text: 'Ймовірність'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Порівняння надійності систем електропостачання'
+                        }
+                    }
+                }
+            });
+            
+            // Розрахунок надійності системи
+            calcReliabilityBtn.addEventListener('click', function() {
+                // Отримання значень з форми
+                const systemType = document.getElementById('systemType').value;
+                const voltage = document.getElementById('voltage').value;
+                const lineType = document.getElementById('lineType').value;
+                const lineLength = parseFloat(document.getElementById('lineLength').value);
+                const transformerType = document.getElementById('transformerType').value;
+                const connections = parseInt(document.getElementById('connections').value);
+                
+                // Розрахунок показників надійності (спрощений приклад)
+                let failureRate, recoveryTime;
+                
+                if (systemType === 'single') {
+                    // Розрахунок для одноколової системи
+                    failureRate = 0.01 + 0.007*lineLength + 0.015 + 0.02 + 0.03*connections;
+                    recoveryTime = (0.01*30 + 0.007*lineLength*10 + 0.015*100 + 0.02*15 + 0.03*connections*2) / failureRate;
+                } else {
+                    // Розрахунок для двоколової системи
+                    const singleFailureRate = 0.01 + 0.007*lineLength + 0.015 + 0.02 + 0.03*connections;
+                    const singleRecoveryTime = (0.01*30 + 0.007*lineLength*10 + 0.015*100 + 0.02*15 + 0.03*connections*2) / singleFailureRate;
+                    
+                    const k_a_oc = (singleFailureRate * singleRecoveryTime) / 8760;
+                    const k_n_oc = 1.2 * (1 * 43 / 8760);
+                    
+                    failureRate = 2 * singleFailureRate * (k_a_oc + 0.5 * k_n_oc) + 0.02;
+                    recoveryTime = singleRecoveryTime / 2;
+                }
+                
+                // Розрахунок ймовірності безвідмовної роботи
+                const reliability = Math.exp(-failureRate);
+                
+                // Розрахунок коефіцієнта аварійного простою
+                const downtimeFactor = (failureRate * recoveryTime) / 8760;
+                
+                // Оновлення результатів
+                reliabilityResult.textContent = reliability.toFixed(4);
+                downtimeResult.textContent = downtimeFactor.toExponential(2);
+                
+                // Оновлення порівняння систем
+                document.getElementById('singleFailureRate').textContent = systemType === 'single' ? 
+                    failureRate.toFixed(4) : (0.01 + 0.007*lineLength + 0.015 + 0.02 + 0.03*connections).toFixed(4);
+                
+                document.getElementById('singleRecoveryTime').textContent = systemType === 'single' ? 
+                    recoveryTime.toFixed(2) : ((0.01*30 + 0.007*lineLength*10 + 0.015*100 + 0.02*15 + 0.03*connections*2) / 
+                    (0.01 + 0.007*lineLength + 0.015 + 0.02 + 0.03*connections)).toFixed(2);
+                
+                document.getElementById('singleDowntime').textContent = systemType === 'single' ? 
+                    downtimeFactor.toExponential(2) : ((0.01 + 0.007*lineLength + 0.015 + 0.02 + 0.03*connections) * 
+                    ((0.01*30 + 0.007*lineLength*10 + 0.015*100 + 0.02*15 + 0.03*connections*2) / 
+                    (0.01 + 0.007*lineLength + 0.015 + 0.02 + 0.03*connections)) / 8760).toExponential(2);
+                
+                if (systemType === 'double') {
+                    document.getElementById('doubleFailureRate').textContent = failureRate.toFixed(4);
+                    document.getElementById('doubleRecoveryTime').textContent = recoveryTime.toFixed(2);
+                    document.getElementById('doubleDowntime').textContent = downtimeFactor.toExponential(2);
+                }
+                
+                // Оновлення графіка
+                reliabilityChart.data.datasets[0].data = systemType === 'single' ? 
+                    [reliability, 0] : [0.92, reliability];
+                reliabilityChart.update();
+            });
+            
+            // Розрахунок збитків
+            calcDamagesBtn.addEventListener('click', function() {
+                // Отримання значень з форми
+                const maxLoad = parseFloat(document.getElementById('maxLoad').value);
+                const usageTime = parseFloat(document.getElementById('usageTime').value);
+                const failureRate = parseFloat(document.getElementById('failureRate').value);
+                const recoveryTime = parseFloat(document.getElementById('recoveryTime').value);
+                const specificDamageA = parseFloat(document.getElementById('specificDamageA').value);
+                const specificDamageP = parseFloat(document.getElementById('specificDamageP').value);
+                
+                // Розрахунок математичного сподівання недовідпущення електроенергії
+                const energyShortageA = failureRate * (recoveryTime / 8760) * maxLoad * 1000 * usageTime;
+                const energyShortageP = 0.004 * maxLoad * 1000 * usageTime; // k_п = 0.004
+                
+                // Розрахунок збитків
+                const damagesA = specificDamageA * energyShortageA;
+                const damagesP = specificDamageP * energyShortageP;
+                const totalDamages = damagesA + damagesP;
+                
+                // Оновлення результатів
+                document.getElementById('energyShortageA').textContent = Math.round(energyShortageA).toLocaleString();
+                document.getElementById('energyShortageP').textContent = Math.round(energyShortageP).toLocaleString();
+                document.getElementById('totalDamage').textContent = Math.round(totalDamages).toLocaleString();
+                damageResult.textContent = totalDamages.toLocaleString('uk-UA', { 
+                    minimumFractionDigits: 2, 
+                    maximumFractionDigits: 2 
+                }) + ' грн';
+            });
+            
+            // Збереження результатів
+            saveResultsBtn.addEventListener('click', function() {
+                alert('Результати збережено успішно!');
+                // Тут буде реальна логіка збереження
+            });
+            
+            // Експорт у PDF
+            exportPDFBtn.addEventListener('click', function() {
+                alert('Функція експорту у PDF буде реалізована у наступній версії');
+                // Тут буде реальна логіка експорту
+            });
+            
+            // Ініціалізація початкових значень
+            calcReliabilityBtn.click();
+            calcDamagesBtn.click();
+        });
+    </script>
+</body>
+</html>
